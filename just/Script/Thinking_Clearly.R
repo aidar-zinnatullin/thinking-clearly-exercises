@@ -40,7 +40,7 @@ ggsave(here('just', 'Images', 'Figure 3.jpeg'))
 
 
 # base R
-jpeg(filename = here("just", "Images", "Figure 4.jpeg"), width = 16, height = 8, units = 'in', res = 500)
+jpeg(filename = here("just", "Images", "Figure 4.jpeg"), width = 8, height = 8, units = 'in', res = 500)
 plot(x=chapter_5_schooling_earn$schooling, y=chapter_5_schooling_earn$earnings, pch=20, col="grey", xlab = 'Schooling', ylab = 'Earnings')
 
 lines(chapter_5_schooling_earn$schooling, predict(lm(earnings~schooling, data=chapter_5_schooling_earn)), type="l", col="orange1", lwd=2)
@@ -67,4 +67,19 @@ ggplot(data = chapter_5_schooling_earn, aes(x = schooling, y = earnings))+
 ggsave(here('just', 'Images', 'Figure 5.jpeg'))
 
 #### New analyses to be continued
+# I have to use data for those who have 12 or less years of schooling and predict for those who have more than 12 years of schooling
+test_model <- lm(data = chapter_5_schooling_earn[chapter_5_schooling_earn$school_completion=="High School",], formula = earnings~schooling)
+prediction_colleg <- predict(test_model, chapter_5_schooling_earn[chapter_5_schooling_earn$school_completion=="College",], type = 'response')
+
+
+colleges <- chapter_5_schooling_earn[chapter_5_schooling_earn$school_completion=="College", 'earnings']
+sqrt(mean((prediction_colleg-colleges$earnings))^2) # error is 5.903655
+
+
+ggplot(data = chapter_5_schooling_earn, aes(x = schooling, y = earnings))+
+  geom_point(aes(colour = school_completion))+
+  geom_smooth(method=lm, aes(fill=school_completion), se=TRUE, fullrange=TRUE)+
+  theme_classic()
+ggsave(here('just', 'Images', 'Figure 6.jpeg'))
+
 
