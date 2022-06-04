@@ -82,5 +82,5 @@ ggplot(data = chapter_5_schooling_earn, aes(x = schooling, y = earnings))+
   geom_smooth(method=lm, aes(fill=school_completion), se=TRUE, fullrange=TRUE)+
   theme_classic()
 ggsave(here('Images', 'Figure 6.jpeg'))
-
+# that is it.
 
